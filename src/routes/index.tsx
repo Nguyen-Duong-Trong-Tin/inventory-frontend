@@ -5,6 +5,10 @@ import LoginPage from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import LayoutDefault from "@/layouts/default";
 import DashboardPage from "@/pages/Dashboard";
+import ProductTypesPage from "@/pages/ProductTypes";
+import ProductTypesList from "@/pages/ProductTypes/list";
+import CreateProductType from "@/pages/ProductTypes/create";
+import UpdateProductType from "@/pages/ProductTypes/update";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +21,24 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <DashboardPage />,
+          },
+          {
+            path: "/product-types",
+            element: <ProductTypesPage />,
+            children: [
+              {
+                index: true,
+                element: <ProductTypesList />,
+              },
+              {
+                path: "create",
+                element: <CreateProductType />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateProductType />,
+              },
+            ],
           },
         ],
       },
