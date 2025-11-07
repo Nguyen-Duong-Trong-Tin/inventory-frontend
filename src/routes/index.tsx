@@ -9,6 +9,10 @@ import SuppliersPage from "@/pages/Suppliers";
 import SuppliersList from "@/pages/Suppliers/list";
 import CreateSupplier from "@/pages/Suppliers/create";
 import UpdateSupplier from "@/pages/Suppliers/update";
+import CustomersPage from "@/pages/Customers";
+import CustomersList from "@/pages/Customers/list";
+import CreateCustomer from "@/pages/Customers/create";
+import UpdateCustomer from "@/pages/Customers/update";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +41,24 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateSupplier />,
+              },
+            ],
+          },
+          {
+            path: "/customers",
+            element: <CustomersPage />,
+            children: [
+              {
+                index: true,
+                element: <CustomersList />,
+              },
+              {
+                path: "create",
+                element: <CreateCustomer />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateCustomer />,
               },
             ],
           },

@@ -5,6 +5,7 @@ import {
   AppstoreOutlined,
   RadiusUprightOutlined,
   SettingOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -20,6 +21,14 @@ function MyMenu() {
       icon: <RadiusUprightOutlined />,
       onClick: () => {
         navigate("/suppliers");
+      },
+    },
+    {
+      key: "customers",
+      label: "Customers",
+      icon: <UserOutlined />,
+      onClick: () => {
+        navigate("/customers");
       },
     },
     {
