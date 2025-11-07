@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import type IRole from "@/interfaces/role";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteRole, findRoles } from "@/services/roles";
+import { PERMISSION_OPTIONS } from "@/constants/permissions";
 import { Select } from "antd";
 
 function RolesList() {
@@ -78,21 +79,19 @@ function RolesList() {
               <TableCell>{role.name}</TableCell>
               <TableCell>{role.description || "-"}</TableCell>
               <TableCell>
-                  {Array.isArray(role.permisstion) ? (
-                    <Select
-                      mode="multiple"
-                      value={role.permisstion}
-                      style={{ width: "100%" }}
-                      placeholder="Select permissions"
-                      options={role.permisstion.map((p) => ({
-                        label: p,
-                        value: p,
-                      }))}
-                    />
-                  ) : (
-                    "-"
-                  )}
-                </TableCell>
+                {Array.isArray(role.permisstion) ? (
+                  <Select
+                    mode="multiple"
+                    value={role.permisstion}
+                    style={{ width: "100%" }}
+                    placeholder="Select permissions"
+                    options={PERMISSION_OPTIONS}
+                    disabled
+                  />
+                ) : (
+                  "-"
+                )}
+              </TableCell>
               <TableCell className="text-right">
                 <Button
                   className="ml-2"

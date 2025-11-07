@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Select, type FormProps } from "antd";
+import { PERMISSION_OPTIONS } from "@/constants/permissions";
 
 import { getCookie } from "@/helpers/cookies";
 import { createRole } from "@/services/roles";
@@ -10,14 +11,6 @@ type FieldType = {
   description?: string;
   permisstion?: string[];
 };
-
-// Danh sách quyền cố định
-const PERMISSION_OPTIONS = [
-  { value: "Create", label: "Create" },
-  { value: "Read", label: "Read" },
-  { value: "Update", label: "Update" },
-  { value: "Delete", label: "Delete" },
-];
 
 function CreateRole() {
   const navigate = useNavigate();

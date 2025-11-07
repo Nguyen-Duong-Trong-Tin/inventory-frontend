@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button, Form, Input, Select, type FormProps } from "antd";
+import { PERMISSION_OPTIONS } from "@/constants/permissions";
 
 import { getCookie } from "@/helpers/cookies";
 import type IRole from "@/interfaces/role";
@@ -12,14 +13,6 @@ type FieldType = {
   description?: string;
   permisstion?: string[];
 };
-
-// Danh sách quyền cố định (giống bên CreateRole)
-const PERMISSION_OPTIONS = [
-  { value: "Create", label: "Create" },
-  { value: "Read", label: "Read" },
-  { value: "Update", label: "Update" },
-  { value: "Delete", label: "Delete" },
-];
 
 function UpdateRole() {
   const { id } = useParams();

@@ -32,7 +32,7 @@ function EmployeesList() {
         const rolesRes = await findRoles({ accessToken });
 
         setEmployees(employeeRes.data.employees.employees);
-        setRoles(rolesRes.data.roles.roles); // ✅ Trích xuất đúng mảng vai trò
+        setRoles(rolesRes.data.roles.roles); 
       } catch {
         toast.error("Failed to fetch data.");
       }
