@@ -1,7 +1,5 @@
 import type IBase from "./base.interface";
 
-import { EUserOnline, EUserStatus } from "../enums/user.enum";
-
 interface IEmployee extends IBase {
   name: string;
   phone: string;

@@ -1,9 +1,13 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { deleteCookie, getCookie } from "../helpers/cookies";
-import { authVerifyAccessToken } from "../services/auth";
 import Header from "@/components/Header";
+import MyMenu from "@/components/MyMenu";
+
+import { authVerifyAccessToken } from "../services/auth";
+import { deleteCookie, getCookie } from "../helpers/cookies";
+
+import "./layouts.css";
 
 function LayoutDefault() {
   const navigate = useNavigate();
@@ -28,9 +32,21 @@ function LayoutDefault() {
 
   return (
     <>
-      <Header />
+      <div className="layout-admin">
+        <div className="layout-left">
+          <MyMenu />
+        </div>
 
-      <Outlet />
+        <div className="layout-right">
+          <Header />
+
+          <main className="main">
+            <Outlet />
+          </main>
+
+          {/* <Footer /> */}
+        </div>
+      </div>
     </>
   );
 }

@@ -6,6 +6,10 @@ import {
   RadiusUprightOutlined,
   SettingOutlined,
   UserOutlined,
+  SafetyOutlined,
+  SettingOutlined,
+  UserOutlined,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +26,33 @@ function MyMenu() {
       icon: <UserOutlined />,
       onClick: () => {
         navigate("/product-types");
+    {
+      key: "suppliers",
+      label: "Suppliers",
+      icon: <RadiusUprightOutlined />,
+      onClick: () => {
+        navigate("/suppliers");
+      },
+    },
+    {
+      key: "customers",
+      label: "Customers",
+      icon: <UserOutlined />,
+      onClick: () => {
+        navigate("/customers");
+      key: "roles",
+      label: "Roles",
+      icon: <SafetyOutlined/>,
+      onClick: () => {
+        navigate("/roles");
+      },
+    },
+     {
+      key: "employees",
+      label: "Employees",
+      icon: <UserSwitchOutlined/>,
+      onClick: () => {
+        navigate("/employees");
       },
     },
     {
