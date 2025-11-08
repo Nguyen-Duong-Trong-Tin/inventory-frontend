@@ -4,8 +4,10 @@ import type { MenuProps } from "antd";
 import {
   AppstoreOutlined,
   RadiusUprightOutlined,
+  SafetyOutlined,
   SettingOutlined,
   UserOutlined,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +31,19 @@ function MyMenu() {
       icon: <UserOutlined />,
       onClick: () => {
         navigate("/customers");
+      key: "roles",
+      label: "Roles",
+      icon: <SafetyOutlined/>,
+      onClick: () => {
+        navigate("/roles");
+      },
+    },
+     {
+      key: "employees",
+      label: "Employees",
+      icon: <UserSwitchOutlined/>,
+      onClick: () => {
+        navigate("/employees");
       },
     },
     {
