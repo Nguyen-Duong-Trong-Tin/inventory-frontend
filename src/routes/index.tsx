@@ -53,6 +53,10 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateProductType />,
+              },
+            ],
+          },
+          {
             path: "/suppliers",
             element: <SuppliersPage />,
             children: [
@@ -85,7 +89,10 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateCustomer />,
-            {
+              },
+            ],
+          },
+          {
             path: "/roles",
             element: <RolesPage />,
             children: [
@@ -103,7 +110,7 @@ const router = createBrowserRouter([
               },
             ],
           },
-           {
+          {
             path: "/employees",
             element: <EmployeesPage />,
             children: [

@@ -14,8 +14,6 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { getCookie } from "@/helpers/cookies";
 import { Button } from "@/components/ui/button";
 
-
-
 import { deleteProductType, findProductTypes } from "@/services/product-types";
 import type IProductType from "@/interfaces/product-type.interface";
 
@@ -27,8 +25,13 @@ function ProductTypesList() {
 
   useEffect(() => {
     const fetchApi = async () => {
-      const response = await findProductTypes({ accessToken });
-      setProductTypes(response.data.productTypes);
+      const {
+        data: {
+          ProductTypes: { ProductTypes },
+        },
+      } = await findProductTypes({ accessToken });
+
+      setProductTypes(ProductTypes);
     };
     fetchApi();
   }, [accessToken, reload]);
@@ -56,6 +59,8 @@ function ProductTypesList() {
     }
   };
 
+  console.log(productTypes);
+
   return (
     <>
       <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
@@ -70,7 +75,6 @@ function ProductTypesList() {
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Phone</TableHead>
-            <TableHead>Email</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
