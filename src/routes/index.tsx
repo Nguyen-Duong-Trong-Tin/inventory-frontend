@@ -9,6 +9,14 @@ import SuppliersPage from "@/pages/Suppliers";
 import SuppliersList from "@/pages/Suppliers/list";
 import CreateSupplier from "@/pages/Suppliers/create";
 import UpdateSupplier from "@/pages/Suppliers/update";
+import RolesPage from "@/pages/Roles";
+import RolesList from "@/pages/Roles/list";
+import CreateRole from "@/pages/Roles/create";
+import UpdateRole from "@/pages/Roles/update";
+import EmployeesPage from "@/pages/Employees";
+import EmployeesList from "@/pages/Employees/list";
+import CreateEmployee from "@/pages/Employees/create";
+import UpdateEmployee from "@/pages/Employees/update";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +45,42 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateSupplier />,
+              },
+            ],
+          },
+            {
+            path: "/roles",
+            element: <RolesPage />,
+            children: [
+              {
+                index: true,
+                element: <RolesList />,
+              },
+              {
+                path: "create",
+                element: <CreateRole />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateRole />,
+              },
+            ],
+          },
+           {
+            path: "/employees",
+            element: <EmployeesPage />,
+            children: [
+              {
+                index: true,
+                element: <EmployeesList />,
+              },
+              {
+                path: "create",
+                element: <CreateEmployee />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateEmployee />,
               },
             ],
           },
