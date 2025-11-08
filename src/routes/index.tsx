@@ -25,6 +25,10 @@ import EmployeesPage from "@/pages/Employees";
 import EmployeesList from "@/pages/Employees/list";
 import CreateEmployee from "@/pages/Employees/create";
 import UpdateEmployee from "@/pages/Employees/update";
+import CreateWarehouse from "@/pages/Warehouses/create";
+import WarehousesPage from "@/pages/Warehouses";
+import WarehousesList from "@/pages/Warehouses/list";
+import UpdateWarehouse from "@/pages/Warehouses/update";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +75,24 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateSupplier />,
+              },
+            ],
+          },
+          {
+            path: "/warehouses",
+            element: <WarehousesPage />,
+            children: [
+              {
+                index: true,
+                element: <WarehousesList />,
+              },
+              {
+                path: "create",
+                element: <CreateWarehouse />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateWarehouse />,
               },
             ],
           },

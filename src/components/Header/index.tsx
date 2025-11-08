@@ -15,7 +15,7 @@ function Header() {
 
   return (
     <header className="w-full bg-white shadow-sm py-3 px-6 flex justify-between items-center">
-      <h1 className="text-xl font-semibold">My App</h1>
+      <h1 className="text-xl font-semibold">Pharma Inventory Manager</h1>
 
       <Button variant="destructive" onClick={handleLogout}>
         Logout
