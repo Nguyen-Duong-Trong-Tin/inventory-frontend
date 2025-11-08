@@ -64,7 +64,7 @@ function ProductTypesList() {
   return (
     <>
       <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
-        List Of Suppliers
+        List Of Product Type
       </h1>
       <div className="flex justify-end">
         <Button onClick={() => navigate("create")}>+</Button>
@@ -74,7 +74,7 @@ function ProductTypesList() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Phone</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>

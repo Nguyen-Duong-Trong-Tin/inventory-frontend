@@ -3,6 +3,7 @@ import type { MenuProps } from "antd";
 
 import {
   AppstoreOutlined,
+  ProductOutlined,
   RadiusUprightOutlined,
   SafetyOutlined,
   SettingOutlined,
@@ -21,7 +22,7 @@ function MyMenu() {
     {
       key: "product-types",
       label: "Product Types",
-      icon: <UserOutlined />,
+      icon: <ProductOutlined />,
       onClick: () => {
         navigate("/product-types");
       }
