@@ -5,6 +5,10 @@ import LoginPage from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import LayoutDefault from "@/layouts/default";
 import DashboardPage from "@/pages/Dashboard";
+import ProductTypesPage from "@/pages/ProductTypes";
+import ProductTypesList from "@/pages/ProductTypes/list";
+import CreateProductType from "@/pages/ProductTypes/create";
+import UpdateProductType from "@/pages/ProductTypes/update";
 import SuppliersPage from "@/pages/Suppliers";
 import SuppliersList from "@/pages/Suppliers/list";
 import CreateSupplier from "@/pages/Suppliers/create";
@@ -35,6 +39,20 @@ const router = createBrowserRouter([
             element: <DashboardPage />,
           },
           {
+            path: "/product-types",
+            element: <ProductTypesPage />,
+            children: [
+              {
+                index: true,
+                element: <ProductTypesList />,
+              },
+              {
+                path: "create",
+                element: <CreateProductType />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateProductType />,
             path: "/suppliers",
             element: <SuppliersPage />,
             children: [

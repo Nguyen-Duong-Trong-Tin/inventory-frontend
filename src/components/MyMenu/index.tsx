@@ -4,6 +4,8 @@ import type { MenuProps } from "antd";
 import {
   AppstoreOutlined,
   RadiusUprightOutlined,
+  SettingOutlined,
+  UserOutlined,
   SafetyOutlined,
   SettingOutlined,
   UserOutlined,
@@ -17,6 +19,13 @@ function MyMenu() {
   const navigate = useNavigate();
 
   const items: MenuItem[] = [
+    
+    {
+      key: "product-types",
+      label: "Product Types",
+      icon: <UserOutlined />,
+      onClick: () => {
+        navigate("/product-types");
     {
       key: "suppliers",
       label: "Suppliers",
