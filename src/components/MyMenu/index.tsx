@@ -4,6 +4,7 @@ import type { MenuProps } from "antd";
 import {
   AppstoreOutlined,
   ContainerOutlined,
+  FileDoneOutlined,
   MedicineBoxOutlined,
   RadiusUprightOutlined,
   SafetyOutlined,
@@ -42,6 +43,14 @@ function MyMenu() {
       icon: <ContainerOutlined  />,
       onClick: () => {
         navigate("/warehouses");
+      },
+    },
+    {
+      key: "warehouse-receipts",
+      label: "Warehouses Receipts",
+      icon: <FileDoneOutlined   />,
+      onClick: () => {
+        navigate("/warehouse-receipts");
       },
     },
     {
