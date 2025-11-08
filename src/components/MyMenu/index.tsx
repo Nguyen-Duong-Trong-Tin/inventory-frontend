@@ -4,8 +4,6 @@ import type { MenuProps } from "antd";
 import {
   AppstoreOutlined,
   RadiusUprightOutlined,
-  SettingOutlined,
-  UserOutlined,
   SafetyOutlined,
   SettingOutlined,
   UserOutlined,
@@ -26,6 +24,8 @@ function MyMenu() {
       icon: <UserOutlined />,
       onClick: () => {
         navigate("/product-types");
+      }
+    },
     {
       key: "suppliers",
       label: "Suppliers",
@@ -40,6 +40,9 @@ function MyMenu() {
       icon: <UserOutlined />,
       onClick: () => {
         navigate("/customers");
+      },
+    },
+    {
       key: "roles",
       label: "Roles",
       icon: <SafetyOutlined/>,
