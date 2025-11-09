@@ -14,52 +14,51 @@ import { getCookie } from "@/helpers/cookies";
 import { Button } from "@/components/ui/button";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import type IWarehouseReceipt from "@/interfaces/warehouse-receipt";
-import type ISupplier from "@/interfaces/supplier";
+import type IDeliveryNote from "@/interfaces/delivery-note";
+import type ICustomer from "@/interfaces/customer";
 import type IWarehouse from "@/interfaces/warehouse";
 import type IEmployee from "@/interfaces/employee";
 
 import {
-  findWarehouseReceipts,
-  deleteWarehouseReceipt,
-} from "@/services/warehouse-receipts";
-import { findSuppliers } from "@/services/suppliers";
+  findDeliveryNotes,
+  deleteDeliveryNote,
+} from "@/services/delivery-notes";
+import { findCustomers } from "@/services/customers";
 import { findWarehouses } from "@/services/warehouses";
 import { findEmployees } from "@/services/employees";
 
-function WarehouseReceiptsList() {
+function DeliveryNotesList() {
   const navigate = useNavigate();
   const accessToken = getCookie("accessToken");
 
   const [reload, setReload] = useState(false);
-  const [receipts, setReceipts] = useState<IWarehouseReceipt[]>([]);
-  const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+  const [notes, setNotes] = useState<IDeliveryNote[]>([]);
+  const [customers, setCustomers] = useState<ICustomer[]>([]);
   const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
   const [employees, setEmployees] = useState<IEmployee[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [receiptRes, supplierRes, warehouseRes, employeeRes] =
+        const [noteRes, customerRes, warehouseRes, employeeRes] =
           await Promise.all([
-            findWarehouseReceipts({ accessToken }),
-            findSuppliers({ accessToken }),
+            findDeliveryNotes({ accessToken }),
+            findCustomers({ accessToken }),
             findWarehouses({ accessToken }),
             findEmployees({ accessToken }),
           ]);
 
-        // ✅ Đọc đúng mảng warehouseReceipts
-        setReceipts(
-          Array.isArray(receiptRes.data?.warehouseReceipts?.warehouseReceipts)
-            ? receiptRes.data.warehouseReceipts.warehouseReceipts
+        setNotes(
+          Array.isArray(noteRes.data?.deliverynotes?.deliverynotes)
+            ? noteRes.data.deliverynotes.deliverynotes
             : []
         );
 
-        setSuppliers(supplierRes.data?.suppliers?.suppliers ?? []);
+        setCustomers(customerRes.data?.customers?.customers ?? []);
         setWarehouses(warehouseRes.data?.warehouses?.warehouses ?? []);
         setEmployees(employeeRes.data?.employees?.employees ?? []);
       } catch {
-        toast.error("Failed to load warehouse receipt data.");
+        toast.error("Failed to load delivery note data.");
       }
     };
 
@@ -74,11 +73,11 @@ function WarehouseReceiptsList() {
     id: string;
   }) => {
     try {
-      if (!confirm("Do you want to delete this receipt?")) return;
+      if (!confirm("Do you want to delete this delivery note?")) return;
 
-      await deleteWarehouseReceipt({ accessToken, id });
+      await deleteDeliveryNote({ accessToken, id });
       setReload(!reload);
-      toast.success("Receipt deleted successfully.");
+      toast.success("Delivery note deleted successfully.");
     } catch {
       toast.error("Something went wrong.");
     }
@@ -95,7 +94,7 @@ function WarehouseReceiptsList() {
   return (
     <>
       <h1 className="text-center text-4xl font-extrabold tracking-tight">
-        List of Warehouse Receipts
+        List of Delivery Notes
       </h1>
       <div className="flex justify-end mb-4">
         <Button onClick={() => navigate("create")}>+ Create</Button>
@@ -104,48 +103,48 @@ function WarehouseReceiptsList() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Receipt No</TableHead>
+            <TableHead>Delivery No</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Supplier</TableHead>
+            <TableHead>Customer</TableHead>
             <TableHead>Warehouse</TableHead>
             <TableHead>Employee</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {receipts.length === 0 ? (
+          {notes.length === 0 ? (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
-                No warehouse receipts found.
+                No delivery notes found.
               </TableCell>
             </TableRow>
           ) : (
-            receipts.map((receipt) => (
-              <TableRow key={receipt._id}>
-                <TableCell>{receipt.receiptNo}</TableCell>
+            notes.map((note) => (
+              <TableRow key={note._id}>
+                <TableCell>{note.deliveryNo}</TableCell>
                 <TableCell>
-                  {new Date(receipt.date).toLocaleDateString()}
+                  {new Date(note.date).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  {getNameById(suppliers, receipt.supplierId)}
+                  {getNameById(customers, note.customerId)}
                 </TableCell>
                 <TableCell>
-                  {getNameById(warehouses, receipt.warehouseId)}
+                  {getNameById(warehouses, note.warehouseId)}
                 </TableCell>
                 <TableCell>
-                  {getNameById(employees, receipt.employeeId)}
+                  {getNameById(employees, note.employeeId)}
                 </TableCell>
                 <TableCell className="text-right">
                   <Button
                     className="ml-2"
-                    onClick={() => navigate(`update/${receipt._id}`)}
+                    onClick={() => navigate(`update/${note._id}`)}
                   >
                     <EditOutlined />
                   </Button>
                   <Button
                     className="ml-2"
                     onClick={() =>
-                      handleDelete({ accessToken, id: receipt._id })
+                      handleDelete({ accessToken, id: note._id })
                     }
                   >
                     <DeleteOutlined />
@@ -160,4 +159,4 @@ function WarehouseReceiptsList() {
   );
 }
 
-export default WarehouseReceiptsList;
+export default DeliveryNotesList;

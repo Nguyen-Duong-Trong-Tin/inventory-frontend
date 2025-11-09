@@ -5,6 +5,7 @@ import {
   AppstoreOutlined,
   ContainerOutlined,
   FileDoneOutlined,
+  FileTextOutlined,
   MedicineBoxOutlined,
   RadiusUprightOutlined,
   SafetyOutlined,
@@ -35,6 +36,14 @@ function MyMenu() {
       icon: <RadiusUprightOutlined />,
       onClick: () => {
         navigate("/suppliers");
+      },
+    },
+     {
+      key: "delivery-notes",
+      label: "Delivery Notes",
+      icon: <FileTextOutlined   />,
+      onClick: () => {
+        navigate("/delivery-notes");
       },
     },
     {
