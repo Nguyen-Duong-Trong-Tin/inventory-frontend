@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button, DatePicker, Form, Input, Select, type FormProps } from "antd";
+import { Button, DatePicker, Form, Select, type FormProps } from "antd";
 import dayjs from "dayjs";
 
 import { getCookie } from "@/helpers/cookies";
@@ -35,6 +35,7 @@ function UpdateWarehouseReceipt() {
   const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
   const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
   const [employees, setEmployees] = useState<IEmployee[]>([]);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,17 +47,26 @@ function UpdateWarehouseReceipt() {
           findEmployees({ accessToken }),
         ]);
 
-        setReceipt(receiptRes.data);
+        const data = receiptRes.data;
+        setReceipt(data);
         setSuppliers(supplierRes.data?.suppliers?.suppliers ?? []);
         setWarehouses(warehouseRes.data?.warehouses?.warehouses ?? []);
         setEmployees(employeeRes.data?.employees?.employees ?? []);
+
+        form.setFieldsValue({
+          date: dayjs(data.date),
+          receiptNo: data.receiptNo,
+          supplierId: data.supplierId,
+          warehouseId: data.warehouseId,
+          employeeId: data.employeeId,
+        });
       } catch {
         toast.error("Failed to load data.");
       }
     };
 
     fetchData();
-  }, [accessToken, id]);
+  }, [accessToken, id, form]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
@@ -73,6 +83,11 @@ function UpdateWarehouseReceipt() {
     }
   };
 
+  const disableFutureDates = (current: any) => {
+    const today = new Date();
+    return current && current.toDate() > today;
+  };
+
   return (
     <>
       <h1 className="text-center text-4xl font-extrabold tracking-tight">
@@ -84,28 +99,27 @@ function UpdateWarehouseReceipt() {
           layout="vertical"
           style={{ marginTop: 30 }}
           onFinish={onFinish}
-          initialValues={{
-            date: dayjs(receipt.date),
-            receiptNo: receipt.receiptNo,
-            supplierId: receipt.supplierId,
-            warehouseId: receipt.warehouseId,
-            employeeId: receipt.employeeId,
-          }}
+          form={form}
         >
           <Form.Item<FieldType>
             label="Receipt Date"
             name="date"
             rules={[{ required: true, message: "Please select receipt date!" }]}
           >
-            <DatePicker style={{ width: "100%" }} />
+            <DatePicker style={{ width: "100%" }} disabledDate={disableFutureDates} />
           </Form.Item>
 
-          <Form.Item<FieldType>
-            label="Receipt Number"
-            name="receiptNo"
-            rules={[{ required: true, message: "Please input receipt number!" }]}
-          >
-            <Input />
+          <Form.Item<FieldType> label="Receipt Number" name="receiptNo">
+            <input
+              disabled
+              style={{
+                width: "100%",
+                padding: "8px",
+                borderRadius: "4px",
+                border: "1px solid #d9d9d9",
+                backgroundColor: "#f5f5f5",
+              }}
+            />
           </Form.Item>
 
           <Form.Item<FieldType>
