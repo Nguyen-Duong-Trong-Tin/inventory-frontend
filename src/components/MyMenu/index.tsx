@@ -3,6 +3,9 @@ import type { MenuProps } from "antd";
 
 import {
   AppstoreOutlined,
+  ContainerOutlined,
+  FileDoneOutlined,
+  MedicineBoxOutlined,
   ProductOutlined,
   RadiusUprightOutlined,
   SafetyOutlined,
@@ -22,6 +25,7 @@ function MyMenu() {
     {
       key: "product-types",
       label: "Product Types",
+      icon: <MedicineBoxOutlined  />,
       icon: <ProductOutlined />,
       onClick: () => {
         navigate("/product-types");
@@ -33,6 +37,22 @@ function MyMenu() {
       icon: <RadiusUprightOutlined />,
       onClick: () => {
         navigate("/suppliers");
+      },
+    },
+    {
+      key: "warehouses",
+      label: "Warehouses",
+      icon: <ContainerOutlined  />,
+      onClick: () => {
+        navigate("/warehouses");
+      },
+    },
+    {
+      key: "warehouse-receipts",
+      label: "Warehouses Receipts",
+      icon: <FileDoneOutlined   />,
+      onClick: () => {
+        navigate("/warehouse-receipts");
       },
     },
     {

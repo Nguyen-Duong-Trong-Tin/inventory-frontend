@@ -10,28 +10,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { getCookie } from "@/helpers/cookies";
 import { Button } from "@/components/ui/button";
+import type IWarehouse from "@/interfaces/warehouse";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { deleteWarehouse, findWarehouses } from "@/services/warehouses";
 
-import { deleteProductType, findProductTypes } from "@/services/product-types";
-import type IProductType from "@/interfaces/product-type.interface";
-
-function ProductTypesList() {
+function WarehousesList() {
   const navigate = useNavigate();
   const accessToken = getCookie("accessToken");
   const [reload, setReload] = useState(false);
-  const [productTypes, setProductTypes] = useState<IProductType[]>([]);
+  const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
 
   useEffect(() => {
     const fetchApi = async () => {
-      const {
-        data: {
-          ProductTypes: { ProductTypes },
-        },
-      } = await findProductTypes({ accessToken });
-
-      setProductTypes(ProductTypes);
+      const response = await findWarehouses({ accessToken });
+      setWarehouses(response.data.warehouses.warehouses);
     };
     fetchApi();
   }, [accessToken, reload]);
@@ -48,7 +42,7 @@ function ProductTypesList() {
         return;
       }
 
-      await deleteProductType({
+      await deleteWarehouse({
         accessToken,
         id,
       });
@@ -59,12 +53,10 @@ function ProductTypesList() {
     }
   };
 
-  console.log(productTypes);
-
   return (
     <>
       <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
-        List Of Product Types
+        List Of Warehouses
       </h1>
       <div className="flex justify-end">
         <Button onClick={() => navigate("create")}>+</Button>
@@ -74,21 +66,20 @@ function ProductTypesList() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Description</TableHead>
+            <TableHead>Address</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {productTypes.map((productType) => (
+          {warehouses.map((warehouse) => (
             <TableRow>
-              <TableCell>{productType.name}</TableCell>
-              <TableCell>{productType.description}</TableCell>
-
+              <TableCell>{warehouse.name}</TableCell>
+              <TableCell>{warehouse.address}</TableCell>
               <TableCell className="text-right">
                 <Button
                   className="ml-2"
                   onClick={() => {
-                    navigate(`update/${productType._id}`);
+                    navigate(`update/${warehouse._id}`);
                   }}
                 >
                   <EditOutlined />
@@ -96,7 +87,7 @@ function ProductTypesList() {
                 <Button
                   className="ml-2"
                   onClick={() =>
-                    handleDelete({ accessToken, id: productType._id })
+                    handleDelete({ accessToken, id: warehouse._id })
                   }
                 >
                   <DeleteOutlined />
@@ -110,4 +101,4 @@ function ProductTypesList() {
   );
 }
 
-export default ProductTypesList;
+export default WarehousesList;

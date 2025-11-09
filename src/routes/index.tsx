@@ -25,6 +25,14 @@ import EmployeesPage from "@/pages/Employees";
 import EmployeesList from "@/pages/Employees/list";
 import CreateEmployee from "@/pages/Employees/create";
 import UpdateEmployee from "@/pages/Employees/update";
+import CreateWarehouse from "@/pages/Warehouses/create";
+import WarehousesPage from "@/pages/Warehouses";
+import WarehousesList from "@/pages/Warehouses/list";
+import UpdateWarehouse from "@/pages/Warehouses/update";
+import WarehouseReceiptsPage from "@/pages/WarehouseReceipts";
+import CreateWarehouseReceipt from "@/pages/WarehouseReceipts/create";
+import WarehouseReceiptsList from "@/pages/WarehouseReceipts/list";
+import UpdateWarehouseReceipt from "@/pages/WarehouseReceipts/update";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +79,42 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateSupplier />,
+              },
+            ],
+          },
+          {
+            path: "/warehouses",
+            element: <WarehousesPage />,
+            children: [
+              {
+                index: true,
+                element: <WarehousesList />,
+              },
+              {
+                path: "create",
+                element: <CreateWarehouse />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateWarehouse />,
+              },
+            ],
+          },
+           {
+            path: "/warehouse-receipts",
+            element: <WarehouseReceiptsPage />,
+            children: [
+              {
+                index: true,
+                element: <WarehouseReceiptsList />,
+              },
+              {
+                path: "create",
+                element: <CreateWarehouseReceipt />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateWarehouseReceipt />,
               },
             ],
           },
