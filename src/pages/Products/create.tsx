@@ -11,34 +11,54 @@ import { findProductTypes } from "@/services/product-types";
 type FieldType = {
   name: string;
   status: string;
-  unit: number;
+  unit: number;          // vẫn là number trong DB
   productTypeId: string;
 };
+
+const UNIT_OPTIONS = [
+  { value: 1, label: "Hộp" },
+  { value: 2, label: "Vỉ" },
+  { value: 3, label: "Viên" },
+  { value: 4, label: "Lọ" },
+  { value: 5, label: "Ống" },
+  { value: 6, label: "Gói" },
+  { value: 7, label: "Chai" },
+  { value: 8, label: "Tuýp" },
+  { value: 9, label: "Hũ" },
+  { value: 10, label: "Thùng" },
+];
+
 
 function CreateProduct() {
   const navigate = useNavigate();
   const accessToken = getCookie("accessToken");
   const [productTypes, setProductTypes] = useState<IProductType[]>([]);
   const [productTypeOptions, setProductTypeOptions] = useState<JSX.Element[]>([]);
+  const { Option } = Select;
 
   useEffect(() => {
     const fetchedProductTypes = async () => {
       try {
         const res = await findProductTypes({ accessToken });
-        const fetchedProductTypes = res.data.productTypes.productTypes; // ✅ đúng cấu trúc từ backend
-        setProductTypes(fetchedProductTypes);
 
-        const options: JSX.Element[] = [];
-        for (let i = 0; i < fetchedProductTypes.length; i++) {
-          options.push(
-            <Select.Option key={fetchedProductTypes[i]._id} value={fetchedProductTypes[i]._id}>
-              {fetchedProductTypes[i].name}
-            </Select.Option>
-          );
-        }
+        // Đọc an toàn, tránh văng lỗi khi key khác nhau
+        const fetchedTypes: IProductType[] =
+          res?.data?.ProductTypes?.ProductTypes ??  // dạng P hoa (nếu BE như vậy)
+          res?.data?.productTypes?.productTypes ??  // camel lồng
+          res?.data?.productTypes ??                // mảng trực tiếp
+          res?.data?.data?.productTypes ??          // lồng trong data
+          [];
+
+        setProductTypes(fetchedTypes);
+
+        const options = fetchedTypes.map((type: IProductType) => (
+          <Option key={type._id} value={type._id}>
+            {type.name}
+          </Option>
+        ));
         setProductTypeOptions(options);
-      } catch {
-        toast.error("Failed to load productTypes.");
+      } catch (err: any) {
+        toast.error(err?.response?.data?.message || "Failed to load productTypes.");
       }
     };
     fetchedProductTypes();
@@ -46,21 +66,27 @@ function CreateProduct() {
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
-      await createProduct({ accessToken, ...values });
+      // đảm bảo unit là number
+      const payload = { ...values, unit: Number(values.unit) };
+      await createProduct({ accessToken, ...payload });
       toast.success("Product created successfully!");
       navigate("/products");
-    } catch {
-      toast.error("Something went wrong.");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Something went wrong.");
     }
+  };
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (info) => {
+    console.warn("Form validation failed:", info);
   };
 
   return (
     <>
       <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
-        Create An Product
+        Create A Product
       </h1>
 
-      <Form layout="vertical" style={{ marginTop: 30 }} onFinish={onFinish}>
+      <Form layout="vertical" style={{ marginTop: 30 }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Form.Item<FieldType>
           label="Name"
           name="name"
@@ -80,17 +106,24 @@ function CreateProduct() {
         <Form.Item<FieldType>
           label="Unit"
           name="unit"
-          rules={[{ required: true, message: "Please input your unit!" }]}
+          rules={[{ required: true, message: "Please select unit!" }]}
         >
-          <Input />
+          <Select
+            placeholder="Select unit..."
+            options={UNIT_OPTIONS}
+            optionFilterProp="label"
+            showSearch
+          />
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="ProductType"
+          label="Product Type"
           name="productTypeId"
           rules={[{ required: true, message: "Please select productType!" }]}
         >
-          <Select placeholder="Select productType...">{productTypeOptions}</Select>
+          <Select placeholder="Select productType...">
+            {productTypeOptions}
+          </Select>
         </Form.Item>
 
         <Form.Item>

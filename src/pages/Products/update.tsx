@@ -12,7 +12,7 @@ import { findProductTypes, findProductTypeById } from "@/services/product-types"
 type FieldType = {
   name: string;
   status: string;
-  unit: number;
+  unit: number;          // vẫn là number
   productTypeId: string;
 };
 
@@ -24,6 +24,23 @@ function UpdateProduct() {
   const [productTypeOptions, setProductTypeOptions] = useState<JSX.Element[]>([]);
   const [productTypeName, setProductTypeName] = useState<string>("");
 
+  const { Option } = Select;
+
+  // map đơn vị
+const UNIT_OPTIONS = [
+  { value: 1, label: "Hộp" },
+  { value: 2, label: "Vỉ" },
+  { value: 3, label: "Viên" },
+  { value: 4, label: "Lọ" },
+  { value: 5, label: "Ống" },
+  { value: 6, label: "Gói" },
+  { value: 7, label: "Chai" },
+  { value: 8, label: "Tuýp" },
+  { value: 9, label: "Hũ" },
+  { value: 10, label: "Thùng" },
+];
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,27 +49,40 @@ function UpdateProduct() {
         const productData = prodRes.data;
         setProduct(productData);
 
-        // Lấy tên loại sản phẩm hiện tại
-        const productTypeRes = await findProductTypeById({ accessToken, id: productData.productTypeId });
-        setProductTypeName(productTypeRes.data.name);
+        // (Tuỳ chọn) Lấy tên loại hiện tại – nếu không dùng có thể bỏ
+        try {
+          const productTypeRes = await findProductTypeById({
+            accessToken,
+            id: productData.productTypeId,
+          });
+          setProductTypeName(productTypeRes.data.name);
+        } catch {
+          /* ignore */
+        }
 
-        // Lấy danh sách loại sản phẩm
+        // Lấy danh sách loại sản phẩm (đọc path an toàn theo nhiều shape)
         const productTypesRes = await findProductTypes({ accessToken });
-        const fetchedProductTypes = productTypesRes.data.productTypes.productTypes; // ✅ đúng cấu trúc từ backend
+        const fetchedProductTypes: IProductType[] =
+          productTypesRes?.data?.ProductTypes?.ProductTypes ??
+          productTypesRes?.data?.productTypes?.productTypes ??
+          productTypesRes?.data?.productTypes ??
+          productTypesRes?.data?.data?.productTypes ??
+          [];
+
         setProductTypes(fetchedProductTypes);
 
-        // Tạo danh sách Select.Option bằng vòng for
+        // Tạo danh sách Select.Option
         const options: JSX.Element[] = [];
         for (let i = 0; i < fetchedProductTypes.length; i++) {
           options.push(
-            <Select.Option key={fetchedProductTypes[i]._id} value={fetchedProductTypes[i]._id}>
+            <Option key={fetchedProductTypes[i]._id} value={fetchedProductTypes[i]._id}>
               {fetchedProductTypes[i].name}
-            </Select.Option>
+            </Option>
           );
         }
         setProductTypeOptions(options);
-      } catch {
-        toast.error("Failed to fetch data.");
+      } catch (err: any) {
+        toast.error(err?.response?.data?.message || "Failed to fetch data.");
       }
     };
     fetchData();
@@ -60,10 +90,11 @@ function UpdateProduct() {
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
-      await updateProduct({ accessToken, id: id as string, ...values });
+      const payload = { ...values, unit: Number(values.unit) }; // gửi number về BE
+      await updateProduct({ accessToken, id: id as string, ...payload });
       toast.success("Product updated successfully!");
-    } catch {
-      toast.error("Something went wrong.");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Something went wrong.");
     }
   };
 
@@ -82,7 +113,7 @@ function UpdateProduct() {
         initialValues={{
           name: product.name,
           status: product.status,
-          unit: product.unit,
+          unit: product.unit,                // ví dụ 1 hoặc 2
           productTypeId: product.productTypeId,
         }}
       >
@@ -105,9 +136,14 @@ function UpdateProduct() {
         <Form.Item<FieldType>
           label="Unit"
           name="unit"
-          rules={[{ required: true, message: "Please input unit!" }]}
+          rules={[{ required: true, message: "Please select unit!" }]}
         >
-          <Input.TextArea rows={4} placeholder="Enter unit..." />
+          <Select
+            placeholder="Select unit..."
+            options={UNIT_OPTIONS}
+            showSearch
+            optionFilterProp="label"
+          />
         </Form.Item>
 
         <Form.Item<FieldType>
@@ -115,7 +151,9 @@ function UpdateProduct() {
           name="productTypeId"
           rules={[{ required: true, message: "Please select productType!" }]}
         >
-          <Select placeholder="Select product type...">{productTypeOptions}</Select>
+          <Select placeholder="Select product type...">
+            {productTypeOptions}
+          </Select>
         </Form.Item>
 
         <Form.Item>

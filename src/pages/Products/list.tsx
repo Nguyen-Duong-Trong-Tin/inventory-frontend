@@ -1,14 +1,9 @@
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { getCookie } from "@/helpers/cookies";
 import { Button } from "@/components/ui/button";
@@ -18,27 +13,66 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteProduct, findProducts } from "@/services/products";
 import { findProductTypes } from "@/services/product-types";
 
+// --- thêm mapping đơn vị ---
+const UNIT_OPTIONS = [
+  { value: 1, label: "Hộp" },
+  { value: 2, label: "Vỉ" },
+  { value: 3, label: "Viên" },
+  { value: 4, label: "Lọ" },
+  { value: 5, label: "Ống" },
+  { value: 6, label: "Gói" },
+  { value: 7, label: "Chai" },
+  { value: 8, label: "Tuýp" },
+  { value: 9, label: "Hũ" },
+  { value: 10, label: "Thùng" },
+];
+
+const getUnitLabel = (u: number) =>
+  UNIT_OPTIONS.find(o => o.value === u)?.label ?? String(u);
+
 function ProductsList() {
   const navigate = useNavigate();
   const accessToken = getCookie("accessToken");
   const [reload, setReload] = useState(false);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [productTypes, setProductTypes] = useState<IProductType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchApi = async () => {
+    (async () => {
       try {
-        const productRes = await findProducts({ accessToken });
-        const productTypesRes = await findProductTypes({ accessToken });
+        setLoading(true);
+        const [productRes, typeRes] = await Promise.all([
+          findProducts({ accessToken }),
+          findProductTypes({ accessToken }),
+        ]);
 
-        setProducts(productRes.data.products.products);
-        setProductTypes(productTypesRes.data.productTypes.productTypes); 
-      } catch {
-        toast.error("Failed to fetch data.");
+        const list =
+          productRes?.data?.products?.products ??
+          productRes?.data?.products ??
+          [];
+        setProducts(list);
+
+        const types =
+          typeRes?.data?.ProductTypes?.ProductTypes ??
+          typeRes?.data?.productTypes?.productTypes ??
+          typeRes?.data?.productTypes ??
+          typeRes?.data?.data?.productTypes ??
+          [];
+        setProductTypes(types);
+      } catch (err: any) {
+        toast.error(err?.response?.data?.message || "Failed to fetch data.");
+      } finally {
+        setLoading(false);
       }
-    };
-    fetchApi();
+    })();
   }, [accessToken, reload]);
+
+  const productTypeMap = useMemo(
+    () => new Map(productTypes.map(t => [t._id, t.name])),
+    [productTypes]
+  );
 
   const handleDelete = async ({
     accessToken,
@@ -49,66 +83,69 @@ function ProductsList() {
   }) => {
     try {
       if (!confirm("Do you want to delete?")) return;
-
+      setDeletingId(id);
       await deleteProduct({ accessToken, id });
-      setReload(!reload);
       toast.success("Delete successfully.");
-    } catch {
-      toast.error("Something went wrong.");
+      setReload(prev => !prev);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Something went wrong.");
+    } finally {
+      setDeletingId(null);
     }
   };
 
-  const getProductTypeName = (productTypeId: string) => {
-    const productType = productTypes.find((r) => r._id === productTypeId);
-    return productType ? productType.name : "Unknown";
-  };
+  const getProductTypeName = (productTypeId: string) =>
+    productTypeMap.get(productTypeId) ?? "Unknown";
 
   return (
     <>
       <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
         List Of Products
       </h1>
+
       <div className="flex justify-end mb-4">
         <Button onClick={() => navigate("create")}>+</Button>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Unit</TableHead>
-            <TableHead>Product Type</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product) => (
-            <TableRow key={product._id}>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.status}</TableCell>
-              <TableCell>{product.unit}</TableCell>
-              <TableCell>{getProductTypeName(product.productTypeId)}</TableCell>
-              <TableCell className="text-right">
-                <Button
-                  className="ml-2"
-                  onClick={() => navigate(`update/${product._id}`)}
-                >
-                  <EditOutlined />
-                </Button>
-                <Button
-                  className="ml-2"
-                  onClick={() =>
-                    handleDelete({ accessToken, id: product._id })
-                  }
-                >
-                  <DeleteOutlined />
-                </Button>
-              </TableCell>
+      {loading ? (
+        <div className="text-center py-8">Loading...</div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Unit</TableHead>
+              <TableHead>Product Type</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {products.map((product) => (
+              <TableRow key={product._id}>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.status}</TableCell>
+                {/* --- đổi hiển thị unit sang nhãn --- */}
+                <TableCell>{getUnitLabel(product.unit)}</TableCell>
+                <TableCell>{getProductTypeName(product.productTypeId)}</TableCell>
+                <TableCell className="text-right space-x-2">
+                  <Button className="ml-2" onClick={() => navigate(`update/${product._id}`)}>
+                    <EditOutlined />
+                  </Button>
+                  <Button
+                    className="ml-2"
+                    onClick={() => handleDelete({ accessToken, id: product._id })}
+                    disabled={deletingId === product._id}
+                  >
+                    <DeleteOutlined />
+                    {deletingId === product._id ? "" : ""}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </>
   );
 }
