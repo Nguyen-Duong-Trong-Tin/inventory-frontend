@@ -7,6 +7,7 @@ import {
   FileDoneOutlined,
   FileTextOutlined,
   MedicineBoxOutlined,
+  ProductOutlined,
   RadiusUprightOutlined,
   SafetyOutlined,
   SettingOutlined,
@@ -26,6 +27,7 @@ function MyMenu() {
       key: "product-types",
       label: "Product Types",
       icon: <MedicineBoxOutlined  />,
+      icon: <ProductOutlined />,
       onClick: () => {
         navigate("/product-types");
       }
