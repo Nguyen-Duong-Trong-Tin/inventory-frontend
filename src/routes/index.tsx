@@ -29,6 +29,18 @@ import ProductsPage from "@/pages/Products";
 import ProductsList from "@/pages/Products/list";
 import CreateProduct from "@/pages/Products/create";
 import UpdateProduct from "@/pages/Products/update";
+import CreateWarehouse from "@/pages/Warehouses/create";
+import WarehousesPage from "@/pages/Warehouses";
+import WarehousesList from "@/pages/Warehouses/list";
+import UpdateWarehouse from "@/pages/Warehouses/update";
+import WarehouseReceiptsPage from "@/pages/WarehouseReceipts";
+import CreateWarehouseReceipt from "@/pages/WarehouseReceipts/create";
+import WarehouseReceiptsList from "@/pages/WarehouseReceipts/list";
+import UpdateWarehouseReceipt from "@/pages/WarehouseReceipts/update";
+import DeliveryNotesPage from "@/pages/DeliveryNotes";
+import DeliveryNotesList from "@/pages/DeliveryNotes/list";
+import CreateDeliveryNote from "@/pages/DeliveryNotes/create";
+import UpdateDeliveryNote from "@/pages/DeliveryNotes/update";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +105,60 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateSupplier />,
+              },
+            ],
+          },
+              {
+            path: "/delivery-notes",
+            element: <DeliveryNotesPage />,
+            children: [
+              {
+                index: true,
+                element: <DeliveryNotesList />,
+              },
+              {
+                path: "create",
+                element: <CreateDeliveryNote />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateDeliveryNote />,
+              },
+            ],
+          },
+          {
+            path: "/warehouses",
+            element: <WarehousesPage />,
+            children: [
+              {
+                index: true,
+                element: <WarehousesList />,
+              },
+              {
+                path: "create",
+                element: <CreateWarehouse />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateWarehouse />,
+              },
+            ],
+          },
+           {
+            path: "/warehouse-receipts",
+            element: <WarehouseReceiptsPage />,
+            children: [
+              {
+                index: true,
+                element: <WarehouseReceiptsList />,
+              },
+              {
+                path: "create",
+                element: <CreateWarehouseReceipt />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateWarehouseReceipt />,
               },
             ],
           },
