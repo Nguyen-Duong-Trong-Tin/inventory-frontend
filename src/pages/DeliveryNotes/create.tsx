@@ -4,28 +4,28 @@ import { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Select, type FormProps } from "antd";
 
 import { getCookie } from "@/helpers/cookies";
-import { createWarehouseReceipt } from "@/services/warehouse-receipts";
-import { findSuppliers } from "@/services/suppliers";
+import { createDeliveryNote } from "@/services/delivery-notes";
+import { findCustomers } from "@/services/customers";
 import { findWarehouses } from "@/services/warehouses";
 import { findEmployees } from "@/services/employees";
 
-import type ISupplier from "@/interfaces/supplier";
+import type ICustomer from "@/interfaces/customer";
 import type IWarehouse from "@/interfaces/warehouse";
 import type IEmployee from "@/interfaces/employee";
 
 type FieldType = {
   date: Date;
-  receiptNo: string;
-  supplierId: string;
+  deliveryNo: string;
+  customerId: string;
   warehouseId: string;
   employeeId: string;
 };
 
-function CreateWarehouseReceipt() {
+function CreateDeliveryNote() {
   const navigate = useNavigate();
   const accessToken = getCookie("accessToken");
 
-  const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+  const [customers, setCustomers] = useState<ICustomer[]>([]);
   const [warehouses, setWarehouses] = useState<IWarehouse[]>([]);
   const [employees, setEmployees] = useState<IEmployee[]>([]);
   const [form] = Form.useForm();
@@ -33,13 +33,13 @@ function CreateWarehouseReceipt() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [supplierRes, warehouseRes, employeeRes] = await Promise.all([
-          findSuppliers({ accessToken }),
+        const [customerRes, warehouseRes, employeeRes] = await Promise.all([
+          findCustomers({ accessToken }),
           findWarehouses({ accessToken }),
           findEmployees({ accessToken }),
         ]);
 
-        setSuppliers(supplierRes.data?.suppliers?.suppliers ?? []);
+        setCustomers(customerRes.data?.customers?.customers ?? []);
         setWarehouses(warehouseRes.data?.warehouses?.warehouses ?? []);
         setEmployees(employeeRes.data?.employees?.employees ?? []);
       } catch {
@@ -47,7 +47,7 @@ function CreateWarehouseReceipt() {
       }
     };
 
-    const generateReceiptNo = () => {
+    const generateDeliveryNo = () => {
       const now = new Date();
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -55,13 +55,13 @@ function CreateWarehouseReceipt() {
       const today = `${year}${month}${day}`;
 
       const timestamp = Date.now().toString().slice(-4).padStart(4, "0");
-      const receiptNo = `WR-${today}-${timestamp}`;
+      const deliveryNo = `DN-${today}-${timestamp}`;
 
-      form.setFieldsValue({ receiptNo });
+      form.setFieldsValue({ deliveryNo });
     };
 
     fetchData();
-    generateReceiptNo();
+    generateDeliveryNo();
   }, [accessToken, form]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
@@ -69,15 +69,15 @@ function CreateWarehouseReceipt() {
       const payload = {
         accessToken,
         date: values.date,
-        receiptNo: values.receiptNo,
-        supplierId: values.supplierId,
+        deliveryNo: values.deliveryNo,
+        customerId: values.customerId,
         warehouseId: values.warehouseId,
         employeeId: values.employeeId,
       };
 
-      await createWarehouseReceipt(payload);
+      await createDeliveryNote(payload);
       toast.success("Create successfully.");
-      navigate("/warehouse-receipts");
+      navigate("/delivery-notes");
     } catch (error) {
       toast.error("Something went wrong.");
     }
@@ -91,19 +91,19 @@ function CreateWarehouseReceipt() {
   return (
     <>
       <h1 className="text-center text-4xl font-extrabold tracking-tight">
-        Create A Warehouse Receipt
+        Create A Delivery Note
       </h1>
 
       <Form layout="vertical" style={{ marginTop: 30 }} onFinish={onFinish} form={form}>
         <Form.Item<FieldType>
-          label="Receipt Date"
+          label="Delivery Date"
           name="date"
-          rules={[{ required: true, message: "Please select receipt date!" }]}
+          rules={[{ required: true, message: "Please select delivery date!" }]}
         >
           <DatePicker style={{ width: "100%" }} disabledDate={disableFutureDates} />
         </Form.Item>
 
-        <Form.Item<FieldType> label="Receipt Number" name="receiptNo">
+        <Form.Item<FieldType> label="Delivery Number" name="deliveryNo">
           <input
             disabled
             style={{
@@ -117,14 +117,14 @@ function CreateWarehouseReceipt() {
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="Supplier"
-          name="supplierId"
-          rules={[{ required: true, message: "Please select supplier!" }]}
+          label="Customer"
+          name="customerId"
+          rules={[{ required: true, message: "Please select customer!" }]}
         >
-          <Select placeholder="Select supplier">
-            {suppliers.map((s) => (
-              <Select.Option key={s._id} value={s._id}>
-                {s.name}
+          <Select placeholder="Select customer">
+            {customers.map((c) => (
+              <Select.Option key={c._id} value={c._id}>
+                {c.name}
               </Select.Option>
             ))}
           </Select>
@@ -168,4 +168,4 @@ function CreateWarehouseReceipt() {
   );
 }
 
-export default CreateWarehouseReceipt;
+export default CreateDeliveryNote;

@@ -33,6 +33,10 @@ import WarehouseReceiptsPage from "@/pages/WarehouseReceipts";
 import CreateWarehouseReceipt from "@/pages/WarehouseReceipts/create";
 import WarehouseReceiptsList from "@/pages/WarehouseReceipts/list";
 import UpdateWarehouseReceipt from "@/pages/WarehouseReceipts/update";
+import DeliveryNotesPage from "@/pages/DeliveryNotes";
+import DeliveryNotesList from "@/pages/DeliveryNotes/list";
+import CreateDeliveryNote from "@/pages/DeliveryNotes/create";
+import UpdateDeliveryNote from "@/pages/DeliveryNotes/update";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +83,24 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateSupplier />,
+              },
+            ],
+          },
+              {
+            path: "/delivery-notes",
+            element: <DeliveryNotesPage />,
+            children: [
+              {
+                index: true,
+                element: <DeliveryNotesList />,
+              },
+              {
+                path: "create",
+                element: <CreateDeliveryNote />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateDeliveryNote />,
               },
             ],
           },
