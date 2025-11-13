@@ -25,6 +25,10 @@ import EmployeesPage from "@/pages/Employees";
 import EmployeesList from "@/pages/Employees/list";
 import CreateEmployee from "@/pages/Employees/create";
 import UpdateEmployee from "@/pages/Employees/update";
+import ProductsPage from "@/pages/Products";
+import ProductsList from "@/pages/Products/list";
+import CreateProduct from "@/pages/Products/create";
+import UpdateProduct from "@/pages/Products/update";
 import CreateWarehouse from "@/pages/Warehouses/create";
 import WarehousesPage from "@/pages/Warehouses";
 import WarehousesList from "@/pages/Warehouses/list";
@@ -65,6 +69,24 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateProductType />,
+              },
+            ],
+          },
+          {
+            path: "/products",
+            element: <ProductsPage />,
+            children: [
+              {
+                index: true,
+                element: <ProductsList />,
+              },
+              {
+                path: "create",
+                element: <CreateProduct />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateProduct />,
               },
             ],
           },

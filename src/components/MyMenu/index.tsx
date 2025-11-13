@@ -33,6 +33,14 @@ function MyMenu() {
       }
     },
     {
+      key: "products",
+      label: "Products",
+      icon: <ProductOutlined />,
+      onClick: () => {
+        navigate("/products");
+      }
+    },
+    {
       key: "suppliers",
       label: "Suppliers",
       icon: <RadiusUprightOutlined />,
