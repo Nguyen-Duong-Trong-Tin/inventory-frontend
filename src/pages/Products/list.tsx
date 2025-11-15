@@ -30,6 +30,14 @@ const UNIT_OPTIONS = [
 const getUnitLabel = (u: number) =>
   UNIT_OPTIONS.find(o => o.value === u)?.label ?? String(u);
 
+const STATUS_OPTIONS = [
+  { value: "active", label: "Hoạt động" },
+  { value: "inactive", label: "Không hoạt động" },
+];
+
+const getStatusLabel = (status: string) =>
+  STATUS_OPTIONS.find(s => s.value === status)?.label ?? status;
+
 function ProductsList() {
   const navigate = useNavigate();
   const accessToken = getCookie("accessToken");
@@ -124,7 +132,7 @@ function ProductsList() {
             {products.map((product) => (
               <TableRow key={product._id}>
                 <TableCell>{product.name}</TableCell>
-                <TableCell>{product.status}</TableCell>
+                <TableCell>{getStatusLabel(product.status)}</TableCell>
                 {/* --- đổi hiển thị unit sang nhãn --- */}
                 <TableCell>{getUnitLabel(product.unit)}</TableCell>
                 <TableCell>{getProductTypeName(product.productTypeId)}</TableCell>

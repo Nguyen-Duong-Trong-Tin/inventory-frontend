@@ -40,6 +40,10 @@ const UNIT_OPTIONS = [
   { value: 10, label: "Thùng" },
 ];
 
+const STATUS_OPTIONS = [
+  { value: "active", label: "Hoạt động" },
+  { value: "inactive", label: "Không hoạt động" },
+];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,9 +132,14 @@ const UNIT_OPTIONS = [
         <Form.Item<FieldType>
           label="Status"
           name="status"
-          rules={[{ required: true, message: "Please input status!" }]}
+          rules={[{ required: true, message: "Please select status!" }]}
         >
-          <Input />
+          <Select
+            placeholder="Select status..."
+            options={STATUS_OPTIONS}
+            showSearch
+            optionFilterProp="label"
+          />
         </Form.Item>
 
         <Form.Item<FieldType>

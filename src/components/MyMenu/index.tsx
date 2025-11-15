@@ -6,6 +6,7 @@ import {
   ContainerOutlined,
   FileDoneOutlined,
   FileTextOutlined,
+  InboxOutlined,
   MedicineBoxOutlined,
   ProductOutlined,
   RadiusUprightOutlined,
@@ -27,7 +28,6 @@ function MyMenu() {
       key: "product-types",
       label: "Product Types",
       icon: <MedicineBoxOutlined  />,
-      icon: <ProductOutlined />,
       onClick: () => {
         navigate("/product-types");
       }
@@ -38,6 +38,14 @@ function MyMenu() {
       icon: <ProductOutlined />,
       onClick: () => {
         navigate("/products");
+      }
+    },
+     {
+      key: "lots",
+      label: "Lots",
+      icon: <InboxOutlined  />,
+      onClick: () => {
+        navigate("/lots");
       }
     },
     {

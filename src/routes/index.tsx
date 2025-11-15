@@ -41,6 +41,10 @@ import DeliveryNotesPage from "@/pages/DeliveryNotes";
 import DeliveryNotesList from "@/pages/DeliveryNotes/list";
 import CreateDeliveryNote from "@/pages/DeliveryNotes/create";
 import UpdateDeliveryNote from "@/pages/DeliveryNotes/update";
+import LotsPage from "@/pages/Lots";
+import LotsList from "@/pages/Lots/list";
+import CreateLot from "@/pages/Lots/create";
+import UpdateLot from "@/pages/Lots/update";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +91,24 @@ const router = createBrowserRouter([
               {
                 path: "update/:id",
                 element: <UpdateProduct />,
+              },
+            ],
+          },
+             {
+            path: "/lots",
+            element: <LotsPage />,
+            children: [
+              {
+                index: true,
+                element: <LotsList />,
+              },
+              {
+                path: "create",
+                element: <CreateLot />,
+              },
+              {
+                path: "update/:id",
+                element: <UpdateLot />,
               },
             ],
           },
