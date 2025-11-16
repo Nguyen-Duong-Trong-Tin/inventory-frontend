@@ -64,6 +64,14 @@ function MyMenu() {
         navigate("/delivery-notes");
       },
     },
+     {
+      key: "delivery-note-details",
+      label: "Delivery Note Details",
+      icon: <FileDoneOutlined    />,
+      onClick: () => {
+        navigate("/delivery-note-details");
+      },
+    },
     {
       key: "warehouses",
       label: "Warehouses",
