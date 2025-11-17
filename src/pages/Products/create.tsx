@@ -28,6 +28,10 @@ const UNIT_OPTIONS = [
   { value: 10, label: "Thùng" },
 ];
 
+const STATUS_OPTIONS = [
+  { value: "active", label: "Hoạt động" },
+  { value: "inactive", label: "Không hoạt động" },
+];
 
 function CreateProduct() {
   const navigate = useNavigate();
@@ -98,9 +102,14 @@ function CreateProduct() {
         <Form.Item<FieldType>
           label="Status"
           name="status"
-          rules={[{ required: true, message: "Please input your status!" }]}
+          rules={[{ required: true, message: "Please select status!" }]}
         >
-          <Input />
+          <Select
+            placeholder="Select status..."
+            options={STATUS_OPTIONS}
+            optionFilterProp="label"
+            showSearch
+          />
         </Form.Item>
 
         <Form.Item<FieldType>

@@ -58,4 +58,11 @@ export const PERMISSION_OPTIONS = [
   { value: "read-role", label: "Read Roles" },
   { value: "update-role", label: "Update Roles" },
   { value: "delete-role", label: "Delete Roles" },
+
+  // DeliveryNoteDetails
+  { value: "create-delivery-note-detail", label: "Create Delivery Note Details" },
+  { value: "read-delivery-note-detail", label: "Read Delivery Note Details" },
+  { value: "update-delivery-note-detail", label: "Update RoDelivery Note Detailsles" },
+  { value: "delete-delivery-note-detail", label: "Delete Delivery Note Details" },
+
 ];
