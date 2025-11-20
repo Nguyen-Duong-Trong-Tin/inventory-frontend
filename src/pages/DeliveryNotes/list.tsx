@@ -22,6 +22,7 @@ import type IEmployee from "@/interfaces/employee";
 import {
   findDeliveryNotes,
   deleteDeliveryNote,
+  downloadDeliveryNotePDF,
 } from "@/services/delivery-notes";
 import { findCustomers } from "@/services/customers";
 import { findWarehouses } from "@/services/warehouses";
@@ -64,6 +65,21 @@ function DeliveryNotesList() {
 
     fetchData();
   }, [accessToken, reload]);
+
+  const handleDownloadDeliveryNotePDF = async (id: string) => {
+    try {
+      const response = await downloadDeliveryNotePDF({ accessToken, id });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `hoa_don_xuat_kho_${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch {
+      toast.error("Không thể tải PDF hóa đơn xuất kho.");
+    }
+  };
 
   const handleDelete = async ({
     accessToken,
@@ -148,6 +164,12 @@ function DeliveryNotesList() {
                     }
                   >
                     <DeleteOutlined />
+                  </Button>
+                     <Button
+                    className="ml-2"
+                    onClick={() => handleDownloadDeliveryNotePDF(note._id)}
+                  >
+                    🖨️ Print
                   </Button>
                 </TableCell>
               </TableRow>

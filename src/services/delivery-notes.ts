@@ -99,3 +99,19 @@ export const deleteDeliveryNote = async ({
   });
   return response;
 };
+
+// GET delivery note PDF by ID
+export const downloadDeliveryNotePDF = async ({
+  accessToken,
+  id,
+}: {
+  accessToken: string;
+  id: string;
+}) => {
+  return axios.get(`${V1}/delivery-notes/download/pdf/${id}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    responseType: 'blob', // 👈 để nhận file PDF
+  });
+};
