@@ -26,6 +26,7 @@ import {
 import { findSuppliers } from "@/services/suppliers";
 import { findWarehouses } from "@/services/warehouses";
 import { findEmployees } from "@/services/employees";
+import { downloadWarehouseReceiptPDF } from "@/services/warehouse-receipts";
 
 function WarehouseReceiptsList() {
   const navigate = useNavigate();
@@ -65,6 +66,21 @@ function WarehouseReceiptsList() {
 
     fetchData();
   }, [accessToken, reload]);
+
+  const handleDownloadPDF = async (id: string) => {
+    try {
+      const response = await downloadWarehouseReceiptPDF({ accessToken, id });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `phieu_nhap_hang_${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch {
+      toast.error("Không thể tải PDF phiếu nhập.");
+    }
+  };
 
   const handleDelete = async ({
     accessToken,
@@ -149,6 +165,12 @@ function WarehouseReceiptsList() {
                     }
                   >
                     <DeleteOutlined />
+                  </Button>
+                  <Button
+                    className="ml-2"
+                    onClick={() => handleDownloadPDF(receipt._id)}
+                  >
+                    🖨️ Print
                   </Button>
                 </TableCell>
               </TableRow>

@@ -95,15 +95,31 @@ export const updateWarehouseReceipt = async ({
 
 // DELETE warehouse receipt
 export const deleteWarehouseReceipt = async ({
+    accessToken,
+    id,
+  }: {
+    accessToken: string;
+    id: string;
+  }) => {
+    return axios.delete(`${V1}/warehouse-receipts/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+};
+
+// GET warehouse receipt PDF by ID
+export const downloadWarehouseReceiptPDF = async ({
   accessToken,
   id,
 }: {
   accessToken: string;
   id: string;
 }) => {
-  return axios.delete(`${V1}/warehouse-receipts/${id}`, {
+  return axios.get(`${V1}/warehouse-receipts/download/pdf/${id}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+    responseType: 'blob', // 👈 để nhận file PDF
   });
 };
