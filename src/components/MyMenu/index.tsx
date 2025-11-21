@@ -23,31 +23,6 @@ function MyMenu() {
   const navigate = useNavigate();
 
   const items: MenuItem[] = [
-    
-    {
-      key: "product-types",
-      label: "Product Types",
-      icon: <MedicineBoxOutlined  />,
-      onClick: () => {
-        navigate("/product-types");
-      }
-    },
-    {
-      key: "products",
-      label: "Products",
-      icon: <ProductOutlined />,
-      onClick: () => {
-        navigate("/products");
-      }
-    },
-     {
-      key: "lots",
-      label: "Lots",
-      icon: <InboxOutlined  />,
-      onClick: () => {
-        navigate("/lots");
-      }
-    },
     {
       key: "suppliers",
       label: "Suppliers",
@@ -56,26 +31,26 @@ function MyMenu() {
         navigate("/suppliers");
       },
     },
-     {
-      key: "delivery-notes",
-      label: "Delivery Notes",
-      icon: <FileTextOutlined   />,
+    {
+      key: "product-types",
+      label: "Product Types",
+      icon: <MedicineBoxOutlined />,
       onClick: () => {
-        navigate("/delivery-notes");
+        navigate("/product-types");
       },
     },
-     {
-      key: "delivery-note-details",
-      label: "Delivery Note Details",
-      icon: <FileDoneOutlined    />,
+    {
+      key: "products",
+      label: "Products",
+      icon: <ProductOutlined />,
       onClick: () => {
-        navigate("/delivery-note-details");
+        navigate("/products");
       },
     },
     {
       key: "warehouses",
       label: "Warehouses",
-      icon: <ContainerOutlined  />,
+      icon: <ContainerOutlined />,
       onClick: () => {
         navigate("/warehouses");
       },
@@ -83,9 +58,52 @@ function MyMenu() {
     {
       key: "warehouse-receipts",
       label: "Warehouses Receipts",
-      icon: <FileDoneOutlined   />,
+      icon: <FileDoneOutlined />,
       onClick: () => {
         navigate("/warehouse-receipts");
+      },
+    },
+    {
+      key: "lots",
+      label: "Lots",
+      icon: <InboxOutlined />,
+      onClick: () => {
+        navigate("/lots");
+      },
+    },
+    {
+      key: "delivery-notes",
+      label: "Delivery Notes",
+      icon: <FileTextOutlined />,
+      onClick: () => {
+        navigate("/delivery-notes");
+      },
+    },
+    {
+      key: "delivery-note-details",
+      label: "Delivery Note Details",
+      icon: <FileDoneOutlined />,
+      onClick: () => {
+        navigate("/delivery-note-details");
+      },
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "roles",
+      label: "Roles",
+      icon: <SafetyOutlined />,
+      onClick: () => {
+        navigate("/roles");
+      },
+    },
+    {
+      key: "employees",
+      label: "Employees",
+      icon: <UserSwitchOutlined />,
+      onClick: () => {
+        navigate("/employees");
       },
     },
     {
@@ -95,35 +113,6 @@ function MyMenu() {
       onClick: () => {
         navigate("/customers");
       },
-    },
-    {
-      key: "roles",
-      label: "Roles",
-      icon: <SafetyOutlined/>,
-      onClick: () => {
-        navigate("/roles");
-      },
-    },
-     {
-      key: "employees",
-      label: "Employees",
-      icon: <UserSwitchOutlined/>,
-      onClick: () => {
-        navigate("/employees");
-      },
-    },
-    {
-      key: "sub2",
-      label: "Navigation Two",
-      icon: <AppstoreOutlined />,
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "sub4",
-      label: "Navigation Three",
-      icon: <SettingOutlined />,
     },
   ];
 
