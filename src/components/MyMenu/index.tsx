@@ -7,6 +7,7 @@ import {
   FileDoneOutlined,
   FileTextOutlined,
   InboxOutlined,
+  LineOutlined,
   MedicineBoxOutlined,
   ProductOutlined,
   RadiusUprightOutlined,
@@ -112,6 +113,14 @@ function MyMenu() {
       icon: <UserOutlined />,
       onClick: () => {
         navigate("/customers");
+      },
+    },
+    {
+      key: "weights",
+      label: "Weights",
+      icon: <LineOutlined  />,
+      onClick: () => {
+        navigate("/weights");
       },
     },
   ];

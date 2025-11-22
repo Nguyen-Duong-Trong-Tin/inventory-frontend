@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+  EditOutlined,
+  DeleteOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
+
+import {
   Table,
   TableBody,
   TableCell,
@@ -13,7 +19,6 @@ import {
 import { getCookie } from "@/helpers/cookies";
 import { Button } from "@/components/ui/button";
 import type ICustomer from "@/interfaces/customer";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteCustomer, findCustomers } from "@/services/customers";
 
 function CustomersList() {
@@ -51,6 +56,10 @@ function CustomersList() {
     } catch {
       toast.error("Something went wrong.");
     }
+  };
+
+  const navigateToSuggesstion = ({ customerId }: { customerId: string }) => {
+    navigate(`/suggestions/${customerId}`);
   };
 
   return (
@@ -91,6 +100,14 @@ function CustomersList() {
                   }
                 >
                   <DeleteOutlined />
+                </Button>
+                <Button
+                  className="ml-2"
+                  onClick={() =>
+                    navigateToSuggesstion({ customerId: customer._id })
+                  }
+                >
+                  <ShoppingCartOutlined />
                 </Button>
               </TableCell>
             </TableRow>
