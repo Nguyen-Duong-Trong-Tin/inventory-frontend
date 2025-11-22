@@ -7,12 +7,15 @@ import { getCookie } from "@/helpers/cookies";
 import type IProduct from "@/interfaces/product";
 import type IProductType from "@/interfaces/product-type.interface";
 import { findProductById, updateProduct } from "@/services/products";
-import { findProductTypes, findProductTypeById } from "@/services/product-types";
+import {
+  findProductTypes,
+  findProductTypeById,
+} from "@/services/product-types";
 
 type FieldType = {
   name: string;
   status: string;
-  unit: number;          // vẫn là number
+  unit: number; // vẫn là number
   productTypeId: string;
 };
 
@@ -21,35 +24,39 @@ function UpdateProduct() {
   const accessToken = getCookie("accessToken");
   const [product, setProduct] = useState<IProduct>();
   const [productTypes, setProductTypes] = useState<IProductType[]>([]);
-  const [productTypeOptions, setProductTypeOptions] = useState<JSX.Element[]>([]);
+  const [productTypeOptions, setProductTypeOptions] = useState<JSX.Element[]>(
+    []
+  );
   const [productTypeName, setProductTypeName] = useState<string>("");
 
   const { Option } = Select;
 
-  // map đơn vị
-const UNIT_OPTIONS = [
-  { value: 1, label: "Hộp" },
-  { value: 2, label: "Vỉ" },
-  { value: 3, label: "Viên" },
-  { value: 4, label: "Lọ" },
-  { value: 5, label: "Ống" },
-  { value: 6, label: "Gói" },
-  { value: 7, label: "Chai" },
-  { value: 8, label: "Tuýp" },
-  { value: 9, label: "Hũ" },
-  { value: 10, label: "Thùng" },
-];
+  const UNIT_OPTIONS = [
+    { value: 1, label: "Box" },
+    { value: 2, label: "Blister pack" },
+    { value: 3, label: "Tablet" },
+    { value: 4, label: "Bottle" },
+    { value: 5, label: "Ampoule" },
+    { value: 6, label: "Sachet" },
+    { value: 7, label: "Bottle" },
+    { value: 8, label: "Tube" },
+    { value: 9, label: "Jar" },
+    { value: 10, label: "Carton" },
+  ];
 
-const STATUS_OPTIONS = [
-  { value: "active", label: "Hoạt động" },
-  { value: "inactive", label: "Không hoạt động" },
-];
+  const STATUS_OPTIONS = [
+    { value: "active", label: "active" },
+    { value: "inactive", label: "inactive" },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Lấy thông tin sản phẩm
-        const prodRes = await findProductById({ accessToken, id: id as string });
+        const prodRes = await findProductById({
+          accessToken,
+          id: id as string,
+        });
         const productData = prodRes.data;
         setProduct(productData);
 
@@ -79,7 +86,10 @@ const STATUS_OPTIONS = [
         const options: JSX.Element[] = [];
         for (let i = 0; i < fetchedProductTypes.length; i++) {
           options.push(
-            <Option key={fetchedProductTypes[i]._id} value={fetchedProductTypes[i]._id}>
+            <Option
+              key={fetchedProductTypes[i]._id}
+              value={fetchedProductTypes[i]._id}
+            >
               {fetchedProductTypes[i].name}
             </Option>
           );
@@ -117,7 +127,7 @@ const STATUS_OPTIONS = [
         initialValues={{
           name: product.name,
           status: product.status,
-          unit: product.unit,                // ví dụ 1 hoặc 2
+          unit: product.unit, // ví dụ 1 hoặc 2
           productTypeId: product.productTypeId,
         }}
       >
