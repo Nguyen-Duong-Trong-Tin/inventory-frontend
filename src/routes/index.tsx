@@ -49,6 +49,8 @@ import DeliveryNoteDetailsPage from "@/pages/DeliveryNoteDetails";
 import DeliveryNoteDetailsList from "@/pages/DeliveryNoteDetails/list";
 import CreateDeliveryNoteDetail from "@/pages/DeliveryNoteDetails/create";
 import UpdateDeliveryNoteDetail from "@/pages/DeliveryNoteDetails/update";
+import SuggesstionPage from "@/pages/Suggesstions";
+import WeightPage from "@/pages/Weights";
 
 const router = createBrowserRouter([
   {
@@ -98,7 +100,7 @@ const router = createBrowserRouter([
               },
             ],
           },
-             {
+          {
             path: "/lots",
             element: <LotsPage />,
             children: [
@@ -134,7 +136,7 @@ const router = createBrowserRouter([
               },
             ],
           },
-              {
+          {
             path: "/delivery-notes",
             element: <DeliveryNotesPage />,
             children: [
@@ -152,7 +154,7 @@ const router = createBrowserRouter([
               },
             ],
           },
-               {
+          {
             path: "/delivery-note-details",
             element: <DeliveryNoteDetailsPage />,
             children: [
@@ -188,7 +190,7 @@ const router = createBrowserRouter([
               },
             ],
           },
-           {
+          {
             path: "/warehouse-receipts",
             element: <WarehouseReceiptsPage />,
             children: [
@@ -259,6 +261,14 @@ const router = createBrowserRouter([
                 element: <UpdateEmployee />,
               },
             ],
+          },
+          {
+            path: "/suggestions/:customerId",
+            element: <SuggesstionPage />,
+          },
+          {
+            path: "/weights",
+            element: <WeightPage />,
           },
         ],
       },
