@@ -13,30 +13,21 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteProduct, findProducts } from "@/services/products";
 import { findProductTypes } from "@/services/product-types";
 
-// --- thêm mapping đơn vị ---
 const UNIT_OPTIONS = [
-  { value: 1, label: "Hộp" },
-  { value: 2, label: "Vỉ" },
-  { value: 3, label: "Viên" },
-  { value: 4, label: "Lọ" },
-  { value: 5, label: "Ống" },
-  { value: 6, label: "Gói" },
-  { value: 7, label: "Chai" },
-  { value: 8, label: "Tuýp" },
-  { value: 9, label: "Hũ" },
-  { value: 10, label: "Thùng" },
+  { value: 1, label: "Box" },
+  { value: 2, label: "Blister pack" },
+  { value: 3, label: "Tablet" },
+  { value: 4, label: "Bottle" },
+  { value: 5, label: "Ampoule" },
+  { value: 6, label: "Sachet" },
+  { value: 7, label: "Bottle" },
+  { value: 8, label: "Tube" },
+  { value: 9, label: "Jar" },
+  { value: 10, label: "Carton" },
 ];
-
 const getUnitLabel = (u: number) =>
   UNIT_OPTIONS.find(o => o.value === u)?.label ?? String(u);
 
-const STATUS_OPTIONS = [
-  { value: "active", label: "Hoạt động" },
-  { value: "inactive", label: "Không hoạt động" },
-];
-
-const getStatusLabel = (status: string) =>
-  STATUS_OPTIONS.find(s => s.value === status)?.label ?? status;
 
 function ProductsList() {
   const navigate = useNavigate();
@@ -122,9 +113,9 @@ function ProductsList() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Unit</TableHead>
               <TableHead>Product Type</TableHead>
+              <TableHead>Unit</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -132,10 +123,9 @@ function ProductsList() {
             {products.map((product) => (
               <TableRow key={product._id}>
                 <TableCell>{product.name}</TableCell>
-                <TableCell>{getStatusLabel(product.status)}</TableCell>
-                {/* --- đổi hiển thị unit sang nhãn --- */}
-                <TableCell>{getUnitLabel(product.unit)}</TableCell>
                 <TableCell>{getProductTypeName(product.productTypeId)}</TableCell>
+                <TableCell>{getUnitLabel(product.unit)}</TableCell>
+                <TableCell>{product.status}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button className="ml-2" onClick={() => navigate(`update/${product._id}`)}>
                     <EditOutlined />
