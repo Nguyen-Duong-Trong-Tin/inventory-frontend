@@ -65,4 +65,6 @@ export const PERMISSION_OPTIONS = [
   { value: "update-delivery-note-detail", label: "Update RoDelivery Note Detailsles" },
   { value: "delete-delivery-note-detail", label: "Delete Delivery Note Details" },
 
+  // Weights
+  { value: "active-weight", label: "Active Weights" },
 ];
